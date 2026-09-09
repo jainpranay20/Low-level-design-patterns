@@ -1,9 +1,6 @@
 # Detailed Code Explanation for Each Design Pattern
 
-This file is written to help you understand not just the name of the pattern, but what each class is doing, why each method is written the way it is, and how the program flows step by step.
-
-If you want to explain this in an interview or for 15 minutes, use this as your deep transcript.
-
+![img.png](img.png)
 ---
 
 # 1. Factory Pattern
