@@ -3,51 +3,58 @@ package CoreDesignPattern.Behavioural.Observer;
 import java.util.ArrayList;
 import java.util.List;
 
-// Observer
-interface Subscriber {
-    void update(String newVideoUploaded);
-}
-
-// Subject
-interface Channel {
-    void subscribe(Subscriber s);
-    void unsubscribe(Subscriber s);
-    void notifySubscribers();
-}
-
-// Concrete Subject
-class YouTubeChannel implements Channel {
-
-    private List<Subscriber> subscribers = new ArrayList<>();
-    private String latestVideo;
-
-    @Override
-    public void subscribe(Subscriber s) {
-        subscribers.add(s);
+public class Main {
+    interface Subscriber {
+        void update(String newVideoUploaded);
     }
 
-    @Override
-    public void unsubscribe(Subscriber s) {
-        subscribers.remove(s);
+    interface Channel {
+        void subscribe(Subscriber s);
+        void unsubscribe(Subscriber s);
+        void notifySubscribers();
     }
 
-    @Override
-    public void notifySubscribers() {
-        for (Subscriber s : subscribers) {
-            s.update(latestVideo);
+    static class YouTubeChannel implements Channel {
+        private final List<Subscriber> subscribers = new ArrayList<>();
+        private String latestVideo;
+
+        @Override
+        public void subscribe(Subscriber s) {
+            subscribers.add(s);
+        }
+
+        @Override
+        public void unsubscribe(Subscriber s) {
+            subscribers.remove(s);
+        }
+
+        @Override
+        public void notifySubscribers() {
+            for (Subscriber s : subscribers) {
+                s.update(latestVideo);
+            }
+        }
+
+        public void uploadVideo(String title) {
+            latestVideo = title;
+            notifySubscribers();
         }
     }
 
-    public void uploadVideo(String title) {
-        latestVideo = title;
-        notifySubscribers();
+    static class User implements Subscriber {
+        private final String name;
+
+        User(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public void update(String newVideoUploaded) {
+            System.out.println(name + " received new video: " + newVideoUploaded);
+        }
     }
 
-
-}
-public class Main {
     public static void main(String[] args) {
-
         YouTubeChannel channel = new YouTubeChannel();
 
         channel.subscribe(new User("Pranay"));
