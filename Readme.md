@@ -406,7 +406,102 @@ Pizza object
 
 ---
 
-# 4. Singleton Pattern
+# 4. Prototype Pattern
+
+## Pattern name
+Prototype Pattern
+
+## What problem does it solve?
+Sometimes creating a new object from scratch is expensive or complex, especially when the object already exists in a similar form.
+
+## What is the idea behind this pattern?
+Instead of constructing a fresh object every time, create an existing object as a prototype and clone it when needed.
+
+## Code structure in this project
+Files involved:
+- `CoreDesignPattern/Creational/Prototype/Main.java`
+
+## Class-by-class explanation
+
+### 1) `Shape`
+This is the abstract base class.
+
+It declares:
+- `clone()`
+- `draw()`
+
+The `clone()` method uses Java's cloning support so that a new object can be created from an existing one.
+
+### 2) `Circle`
+This class extends `Shape`.
+
+It contains extra data like:
+- `radius`
+
+It also has a setter method so that a cloned circle can be modified independently from the original prototype.
+
+### 3) `Rectangle`
+This class also extends `Shape`.
+
+It stores:
+- `width`
+- `height`
+
+It has a `resize()` method to change only the cloned rectangle.
+
+### 4) `ShapeCache`
+This class stores predefined prototype objects in a map.
+
+It contains entries such as:
+- `circle`
+- `rectangle`
+
+When the client asks for a shape, the cache returns a clone of that prototype instead of creating a brand-new object manually.
+
+### 5) `main()`
+The main method creates multiple clones from the same prototypes.
+
+Then it changes one clone's values and checks that the original prototype remains unchanged.
+
+## What the code is doing step by step
+
+```java
+Shape circle1 = ShapeCache.getShape("circle");
+Shape circle2 = ShapeCache.getShape("circle");
+```
+
+This does the following:
+
+1. `ShapeCache` fetches the stored `Circle` prototype
+2. `clone()` creates a new object with the same data
+3. Both `circle1` and `circle2` start as identical copies
+4. Changing `circle2` does not affect `circle1`
+
+The same idea applies to `Rectangle` as well.
+
+## Why is this useful?
+Because cloning avoids repeated expensive setup and gives us ready-made object templates.
+
+## Deep transcript you can say
+
+"Prototype Pattern is useful when creating new objects is expensive or when we already have an object that can act as a template. In this project, the `ShapeCache` stores prototype instances of `Circle` and `Rectangle`, and every request gets a cloned version. That means the client can work with fresh objects while preserving the original prototype unchanged."
+
+## Flow
+
+```text
+ShapeCache
+   |
+   +--> getShape(type)
+            |
+            v
+      clone prototype
+            |
+            +--> new shape object
+```
+
+---
+
+# 5. Singleton Pattern
 
 ## Pattern name
 Singleton Pattern
@@ -518,7 +613,89 @@ Check instance == null?
 
 ---
 
-# 5. Adapter Pattern
+# 5. Composite Pattern
+
+## Pattern name
+Composite Pattern
+
+## What problem does it solve?
+When you have a tree-like structure where some elements are individual objects and others are groups containing multiple objects, it becomes hard to manage them with separate logic.
+
+## What is the idea behind this pattern?
+Define one common interface for both single objects and groups, then let composite objects contain child components.
+
+## Code structure in this project
+Files involved:
+- `CoreDesignPattern/Structural/Composite/CompositeDemo.java`
+
+## Class-by-class explanation
+
+### 1) `FileSystemComponent`
+This is the common interface used by both files and folders.
+
+It declares:
+- `showDetails(String indent)`
+
+### 2) `File`
+This is a leaf node.
+
+It represents a single file and prints its own name.
+
+### 3) `Folder`
+This is a composite node.
+
+It stores a list of child components and can add or remove them.
+
+When `showDetails()` is called, it prints the folder name and then recursively prints all children.
+
+### 4) `main()`
+The main method builds a small file system hierarchy:
+- `project`
+  - `src`
+  - `docs`
+    - `api`
+
+Then it calls:
+
+```java
+root.showDetails("");
+```
+
+This prints the complete folder tree.
+
+## What the code is doing step by step
+
+1. Create a `Folder` called `project`
+2. Add nested folders such as `src`, `docs`, and `api`
+3. Add files like `Main.java`, `readme.md`, and `pom.xml`
+4. Call `showDetails("")` on the root folder
+5. Each folder prints its name and then traverses its children
+
+## Why is this useful?
+Because the client can treat files and folders in the same way, even though they have different internal implementations.
+
+## Deep transcript you can say
+
+"Composite Pattern is used to represent part-whole hierarchies. In this example, a folder can contain both files and other folders, while a file is just a leaf. By using a common interface, the client can traverse the entire structure uniformly via recursion. This is why the pattern is useful for file systems, UI tree structures, and organization charts."
+
+## Flow
+
+```text
+rootFolder
+   |
+   +--> Folder(src)
+   |      +--> File(Main.java)
+   |      +--> File(Utils.java)
+   |
+   +--> Folder(docs)
+          +--> File(readme.md)
+          +--> Folder(api)
+                 +--> File(index.html)
+```
+
+---
+
+# 6. Adapter Pattern
 
 ## Pattern name
 Adapter Pattern
@@ -633,7 +810,7 @@ UPIPaymentAdapter
 
 ---
 
-# 6. Decorator Pattern
+# 7. Decorator Pattern
 
 ## Pattern name
 Decorator Pattern
@@ -779,7 +956,7 @@ Final decorated coffee
 
 ---
 
-# 7. Facade Pattern
+# 8. Facade Pattern
 
 ## Pattern name
 Facade Pattern
@@ -889,7 +1066,7 @@ HomeTheaterFacade.watchMovie()
 
 ---
 
-# 8. Proxy Pattern
+# 9. Proxy Pattern
 
 ## Pattern name
 Proxy Pattern
@@ -988,7 +1165,7 @@ Real Object
 
 ---
 
-# 9. Chain of Responsibility Pattern
+# 10. Chain of Responsibility Pattern
 
 ## Pattern name
 Chain of Responsibility Pattern
@@ -1102,7 +1279,7 @@ TeamLead
 
 ---
 
-# 10. Observer Pattern
+# 11. Observer Pattern
 
 ## Pattern name
 Observer Pattern
@@ -1203,7 +1380,7 @@ YouTubeChannel
 
 ---
 
-# 11. State Pattern
+# 12. State Pattern
 
 ## Pattern name
 State Pattern
@@ -1336,7 +1513,7 @@ currentState
 
 ---
 
-# 12. Strategy Pattern
+# 13. Strategy Pattern
 
 ## Pattern name
 Strategy Pattern
@@ -1467,11 +1644,13 @@ These patterns help create objects.
 - Factory
 - Abstract Factory
 - Builder
+- Prototype
 - Singleton
 
 ## Structural Patterns
 These patterns help organize classes and objects.
 - Adapter
+- Composite
 - Decorator
 - Facade
 - Proxy
@@ -1495,8 +1674,10 @@ These patterns help objects communicate and behave correctly.
 - Factory: centralizes creation
 - Abstract Factory: creates related families
 - Builder: builds complex objects step by step
+- Prototype: clones existing objects as templates
 - Singleton: one shared instance
 - Adapter: makes incompatible interfaces work together
+- Composite: treats individual and group objects uniformly
 - Decorator: adds behavior dynamically
 - Facade: hides subsystem complexity
 - Proxy: controls access to another object
